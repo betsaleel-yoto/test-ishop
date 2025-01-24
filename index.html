@@ -1,0 +1,102 @@
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iShop - Votre boutique Apple premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="light-effect">
+    <div class="light blue"></div>
+    <div class="light red"></div>
+  </div>
+  <div id="app">
+    <header>
+      <nav>
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 40 40">
+            <path fill="#333" d="M30.5 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zM20.5 7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+          </svg>
+          <span>iShop</span>
+        </div>
+        <button class="menu-toggle" @click="toggleMenu">
+          <i :class="['fas', menuOpen ? 'fa-times' : 'fa-bars']"></i>
+        </button>
+        <ul class="nav-links" :class="{ 'active': menuOpen }">
+          <li><a href="#accueil" @click="navigateTo('home')">Accueil</a></li>
+          <li><a href="#produits" @click="navigateTo('products')">Produits</a></li>
+          <li><a href="#contact" @click="navigateTo('contact')">Contact</a></li>
+        </ul>
+        <div class="cart" @click="showCart = !showCart">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" v-if="cartItems.length">{{ cartItems.length }}</span>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <component :is="currentPage"></component>
+    </main>
+
+    <!-- Panier -->
+    <div class="cart-modal" v-if="showCart">
+      <div class="cart-content">
+        <div class="cart-header">
+          <h3>Votre Panier</h3>
+          <button class="close-cart" @click="showCart = false">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div v-if="cartItems.length === 0" class="empty-cart">
+          Votre panier est vide
+        </div>
+        <div v-else class="cart-items">
+          <div v-for="item in cartItems" :key="item.id" class="cart-item">
+            <img :src="item.image" :alt="item.name">
+            <div class="item-details">
+              <h4>{{ item.name }}</h4>
+              <p>{{ item.price }}€</p>
+            </div>
+            <button @click="removeFromCart(item)" class="remove-btn">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <div class="cart-total">
+            <h4>Total: {{ cartTotal }}€</h4>
+            <button class="checkout-btn" @click="checkout">Commander</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>À propos de iShop</h3>
+          <p>Votre revendeur Apple premium depuis 2023</p>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>Email: contact@ishop.fr</p>
+          <p>Tél: 01 23 45 67 89</p>
+        </div>
+        <div class="footer-section">
+          <h3>Suivez-nous</h3>
+          <div class="social-links">
+            <a href="https://facebook.com"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
